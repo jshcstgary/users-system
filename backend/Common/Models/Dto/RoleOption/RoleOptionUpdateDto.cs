@@ -19,7 +19,7 @@ public class RoleOptionUpdateDto
 	/// The name of the Role Option. This must be between 1 and 30 characters in length.
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
-	[StringLength(30, MinimumLength = 1, ErrorMessage = "The field {0} must contain at least {1} and up to {2} characters.")]
+	[StringLength(30, MinimumLength = 1, ErrorMessage = "The field {0} must contain at least {2} and up to {1} characters.")]
 	public string Name { get; set; } = null!;
 
 	/// <summary>
@@ -27,7 +27,7 @@ public class RoleOptionUpdateDto
 	/// in length.
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
-	[StringLength(60, MinimumLength = 1, ErrorMessage = "The field {0} must contain at least {1} and up to {2} characters.")]
+	[StringLength(60, MinimumLength = 1, ErrorMessage = "The field {0} must contain at least {2} and up to {1} characters.")]
 	public string Link { get; set; } = null!;
 
 	/// <summary>

@@ -21,7 +21,7 @@ public class RoleUpdateDto
 	/// The name of the Role. This must be between 1 and 30 characters in length.
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
-	[StringLength(30, MinimumLength = 1, ErrorMessage = "The field {0} must contain at least {1} and up to {2} characters.")]
+	[StringLength(30, MinimumLength = 1, ErrorMessage = "The field {0} must contain at least {2} and up to {1} characters.")]
 	public string Name { get; set; } = null!;
 
 	/// <summary>
@@ -36,6 +36,18 @@ public class RoleUpdateDto
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
 	public byte[] RowVersion { get; set; } = null!;
+
+	/// <summary>
+	/// The date and time when the Role was created.
+	/// </summary>
+	[Required(ErrorMessage = "The field {0} is required")]
+	public DateTime CreatedAt { get; set; }
+
+	/// <summary>
+	/// The date and time when the Role was last updated.
+	/// </summary>
+	[Required(ErrorMessage = "The field {0} is required")]
+	public DateTime UpdatedAt { get; set; }
 
 	/// <summary>
 	/// A collection of RoleOptions associated with this Role.

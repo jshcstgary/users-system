@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 using Common.Models;
-using Common.Constants;
 
 namespace RoleOptionES.Data;
 
@@ -19,6 +17,8 @@ public partial class AppDbContext(DbContextOptions<AppDbContext> options) : DbCo
 			entity.ToTable("ROLE_OPTIONS", "maintainer", tb => tb.HasComment("Table to store the options of the roles."));
 
 			entity.HasIndex(e => e.Link, "IX__UQ__ROLE_OPTIONS__LINK").IsUnique();
+
+			entity.HasIndex(e => e.Name, "IX__UQ__ROLE_OPTIONS__NAME").IsUnique();
 
 			entity.Property(e => e.Id)
 				.HasComment("The unique identifier for the role option.")
