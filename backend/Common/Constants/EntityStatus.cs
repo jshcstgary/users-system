@@ -11,16 +11,12 @@ namespace Common.Constants;
 public class EntityStatus
 {
 	/// <summary>
-	/// Represents the active status of an entity. This indicates that the entity is
-	/// currently operational and available for use. It is equivalent to the boolean
-	/// value <c>true</c>.
+	/// Represents the active status of an entity. This indicates that the entity is currently operational and available for use. It is equivalent to the boolean value <c>true</c>.
 	/// </summary>
 	public const bool Active = true;
 
 	/// <summary>
-	/// Represents the inactive status of an entity. This indicates that the entity
-	/// is currently not operational or unavailable for use. It is equivalent to the
-	/// boolean value <c>false</c>.
+	/// Represents the inactive status of an entity. This indicates that the entity is currently not operational or unavailable for use. It is equivalent to the boolean value <c>false</c>.
 	/// </summary>
 	public const bool Inactive = false;
 }

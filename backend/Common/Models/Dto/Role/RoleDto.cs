@@ -5,9 +5,7 @@ using Common.Models.Dto.RoleOption;
 namespace Common.Models.Dto.Role;
 
 /// <summary>
-/// Data Transfer Object (DTO) representing a Role. This DTO is used for transferring
-/// Role data between layers of the application, such as between the API and the
-/// business logic.
+/// Data Transfer Object (DTO) representing a Role. This DTO is used for transferring Role data between layers of the application, such as between the API and the business logic.
 /// </summary>
 public class RoleDto
 {
@@ -31,8 +29,7 @@ public class RoleDto
 	public bool Status { get; set; }
 
 	/// <summary>
-	/// A row version used for optimistic concurrency control.  This ensures data
-	/// integrity by preventing concurrent updates from overwriting each other.
+	/// A row version used for optimistic concurrency control.  This ensures data integrity by preventing concurrent updates from overwriting each other.
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
 	public byte[] RowVersion { get; set; } = null!;

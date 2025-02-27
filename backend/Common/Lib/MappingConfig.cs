@@ -8,18 +8,15 @@ using Common.Models.Dto.User;
 namespace Common.Lib;
 
 /// <summary>
-/// It contains the mapping configuration for AutoMapper between all the entities of the
-/// system.
+/// It contains the mapping configuration for AutoMapper between all the entities of the system.
 /// </summary>
 /// <remarks>
-/// It inherits from the <see cref="Profile"/> class, which allows grouping related mapping
-/// configurations.
+/// It inherits from the <see cref="Profile"/> class, which allows grouping related mapping configurations.
 /// </remarks>
 public class MappingConfig : Profile
 {
 	/// <summary>
-	/// Initializes a new instance of the <see cref="MappingConfig"/> class.
-	/// Defines the mappings between types.
+	/// Initializes a new instance of the <see cref="MappingConfig"/> class. Defines the mappings between types.
 	/// </summary>
 	public MappingConfig()
 	{

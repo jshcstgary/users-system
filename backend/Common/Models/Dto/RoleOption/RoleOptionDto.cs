@@ -3,9 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Common.Models.Dto.RoleOption;
 
 /// <summary>
-/// Data Transfer Object (DTO) representing a Role Option. This DTO is used for transferring
-/// Role data between layers of the application, such as between the API and the
-/// business logic.
+/// Data Transfer Object (DTO) representing a Role Option. This DTO is used for transferring Role data between layers of the application, such as between the API and the business logic.
 /// </summary>
 public class RoleOptionDto
 {
@@ -23,8 +21,7 @@ public class RoleOptionDto
 	public string Name { get; set; } = null!;
 
 	/// <summary>
-	/// The link associated with the Role Option. This must be between 1 and 30 characters
-	/// in length.
+	/// The link associated with the Role Option. This must be between 1 and 30 characters in length.
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
 	[StringLength(60, MinimumLength = 1, ErrorMessage = "The field {0} must contain at least {2} and up to {1} characters.")]
@@ -49,8 +46,7 @@ public class RoleOptionDto
 	public DateTime UpdatedAt { get; set; }
 
 	/// <summary>
-	/// A row version used for optimistic concurrency control. This ensures data
-	/// integrity by preventing concurrent updates from overwriting each other.
+	/// A row version used for optimistic concurrency control. This ensures data integrity by preventing concurrent updates from overwriting each other.
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
 	public byte[] RowVersion { get; set; } = null!;

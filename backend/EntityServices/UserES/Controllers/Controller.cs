@@ -39,8 +39,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// Creates a new <see cref="User"/>.
 	/// </summary>
 	/// <param name="userCreateDto">The data for the creation of the <see cref="User"/>.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the <see cref="User"/> created.</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the <see cref="User"/> created.</returns>
 	[HttpPost(Name = $"{className}_{Names.CreateMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status201Created)]
 	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status400BadRequest)]
@@ -166,8 +165,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// Gets a list of <see cref="User"/> entities.
 	/// </summary>
 	/// <param name="paginationParams">The paging parameters for the query.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the list of <see cref="User"/> entities.</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the list of <see cref="User"/> entities.</returns>
 	[HttpGet(Name = $"{className}_{Names.GetAllMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<IEnumerable<UserDto>>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<IEnumerable<UserDto>>), StatusCodes.Status408RequestTimeout)]
@@ -251,8 +249,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// You get a <see cref="User"/> for your ID.
 	/// </summary>
 	/// <param name="id">The ID of the <see cref="User"/> to obtain.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the <see cref="User"/>.</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the <see cref="User"/>.</returns>
 	[HttpGet("{id}", Name = $"{className}_{Names.GetByIdMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status400BadRequest)]
@@ -332,8 +329,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// Updates an existing <see cref="User"/>.
 	/// </summary>
 	/// <param name="userUpdateDto">The data for the update of the <see cref="User"/>.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the updated <see cref="User"/>.</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the updated <see cref="User"/>.</returns>
 	[HttpPut(Name = $"{className}_{Names.UpdateMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status400BadRequest)]
@@ -437,8 +433,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// Deletes a <see cref="User"/> by its ID.
 	/// </summary>
 	/// <param name="id">The ID of the <see cref="User"/> to be deleted.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the role option removed (if applicable).</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the role option removed (if applicable).</returns>
 	[HttpDelete("{id}", Name = $"{className}_{Names.DeleteMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status400BadRequest)]

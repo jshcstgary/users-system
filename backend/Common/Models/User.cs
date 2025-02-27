@@ -73,8 +73,7 @@ public class User
 	public DateTime UpdatedAt { get; set; }
 
 	/// <summary>
-	/// A row version used for optimistic concurrency control. This property is
-	/// automatically managed by the database.
+	/// A row version used for optimistic concurrency control. This property is automatically managed by the database.
 	/// </summary>
 	public byte[] RowVersion { get; set; } = null!;
 

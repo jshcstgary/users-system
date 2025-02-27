@@ -18,14 +18,12 @@ public class Role
 	public string Name { get; set; } = null!;
 
 	/// <summary>
-	/// Indicates whether the role is currently active. True if role is active
-	/// and can be assigned to users, false otherwise.
+	/// Indicates whether the role is currently active. True if role is active and can be assigned to users, false otherwise.
 	/// </summary>
 	public bool Status { get; set; } = EntityStatus.Active;
 
 	/// <summary>
-	/// A row version used for optimistic concurrency control. This property
-	/// is automatically managed by the database.
+	/// A row version used for optimistic concurrency control. This property is automatically managed by the database.
 	/// </summary>
 	public byte[] RowVersion { get; set; } = null!;
 
@@ -45,8 +43,7 @@ public class Role
 	public virtual ICollection<User> Users { get; set; } = [];
 
 	/// <summary>
-	/// A collection of role options associated with this role. These options
-	/// define the specific permissions or functionalities granted to the role.
+	/// A collection of role options associated with this role. These options define the specific permissions or functionalities granted to the role.
 	/// </summary>
 	public virtual ICollection<RoleOption> RoleOptions { get; set; } = [];
 }

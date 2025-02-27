@@ -12,8 +12,7 @@ using RoleES.Repository.Interfaces;
 namespace RoleES.Repository;
 
 /// <summary>
-/// Implementation of <see cref="IRepository"/> that interacts with a data repository
-/// for CRUD operations on <see cref="Role"/> entities.
+/// Implementation of <see cref="IRepository"/> that interacts with a data repository for CRUD operations on <see cref="Role"/> entities.
 /// </summary>
 public class Repository : IRepository
 {

@@ -12,8 +12,7 @@ using UserES.Repository.Interfaces;
 namespace UserES.Repository;
 
 /// <summary>
-/// Implementation of <see cref="IRepository"/> that interacts with a data repository
-/// for CRUD operations on <see cref="User"/> entities.
+/// Implementation of <see cref="IRepository"/> that interacts with a data repository for CRUD operations on <see cref="User"/> entities.
 /// </summary>
 public class Repository : IRepository
 {

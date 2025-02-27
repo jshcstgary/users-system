@@ -12,8 +12,7 @@ using RoleOptionES.Repository.Interfaces;
 namespace RoleOptionES.Repository;
 
 /// <summary>
-/// Implementation of <see cref="IRepository"/> that interacts with a data repository
-/// for CRUD operations on <see cref="RoleOption"/> entities.
+/// Implementation of <see cref="IRepository"/> that interacts with a data repository for CRUD operations on <see cref="RoleOption"/> entities.
 /// </summary>
 public class Repository : IRepository
 {

@@ -5,9 +5,7 @@ using Common.Models.Dto.Role;
 namespace Common.Models.Dto.User;
 
 /// <summary>
-/// Data Transfer Object (DTO) representing a User. This DTO is used for transferring
-/// User data between layers of the application, such as between the API and the
-/// business logic.
+/// Data Transfer Object (DTO) representing a User. This DTO is used for transferring User data between layers of the application, such as between the API and the business logic.
 /// </summary>
 public class UserDto
 {
@@ -93,7 +91,7 @@ public class UserDto
 	public DateTime UpdatedAt { get; set; }
 
 	/// <summary>
-	/// A row version used for optimistic concurrency control.
+	/// A row version used for optimistic concurrency control. This ensures data integrity by preventing concurrent updates from overwriting each other.
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
 	public byte[] RowVersion { get; set; } = null!;

@@ -10,7 +10,6 @@ using Common.Models;
 using Common.Models.Dto.Role;
 
 using RoleES.Services.Interfaces;
-using Microsoft.Data.SqlClient;
 
 namespace RoleES.Controllers;
 
@@ -40,8 +39,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// Creates a new <see cref="Role"/>.
 	/// </summary>
 	/// <param name="roleCreateDto">The data for the creation of the <see cref="Role"/>.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the <see cref="Role"/> created.</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the <see cref="Role"/> created.</returns>
 	[HttpPost(Name = $"{className}_{Names.CreateMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status201Created)]
 	[ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status400BadRequest)]
@@ -153,8 +151,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// Gets a list of <see cref="Role"/> entities.
 	/// </summary>
 	/// <param name="paginationParams">The paging parameters for the query.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the list of <see cref="Role"/> entities.</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the list of <see cref="Role"/> entities.</returns>
 	[HttpGet(Name = $"{className}_{Names.GetAllMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<IEnumerable<RoleDto>>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<IEnumerable<RoleDto>>), StatusCodes.Status408RequestTimeout)]
@@ -238,8 +235,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// You get a <see cref="Role"/> for your ID.
 	/// </summary>
 	/// <param name="id">The ID of the <see cref="Role"/> to obtain.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the <see cref="Role"/>.</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the <see cref="Role"/>.</returns>
 	[HttpGet("{id}", Name = $"{className}_{Names.GetByIdMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status400BadRequest)]
@@ -319,8 +315,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// Updates an existing <see cref="Role"/>.
 	/// </summary>
 	/// <param name="roleUpdateDto">The data for the update of the <see cref="Role"/>.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the updated <see cref="Role"/>.</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the updated <see cref="Role"/>.</returns>
 	[HttpPut(Name = $"{className}_{Names.UpdateMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status400BadRequest)]
@@ -424,8 +419,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	/// Deletes a <see cref="Role"/> by its ID.
 	/// </summary>
 	/// <param name="id">The ID of the <see cref="Role"/> to be deleted.</param>
-	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the role option removed (if applicable).</returns>
+	/// <returns>A task that represents the asynchronous operation and returns an API response with the role option removed (if applicable).</returns>
 	[HttpDelete("{id}", Name = $"{className}_{Names.DeleteMethod}")]
 	[ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status200OK)]
 	[ProducesResponseType(typeof(ApiResponse<RoleDto>), StatusCodes.Status400BadRequest)]

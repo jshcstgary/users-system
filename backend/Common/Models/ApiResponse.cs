@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Common.Models;
 
 /// <summary>
-/// Proporciona una estructura consistente para las respuestas de una API REST,
-/// ya sean exitosas o fallidas. Hereda de <see cref="ProblemDetails"/> para
-/// aprovechar la funcionalidad de manejo de errores estándar de ASP.NET Core,
-/// al mismo tiempo que agrega la capacidad de transportar datos en caso de éxito.
+/// Provides a consistent structure for REST API responses, whether successful or failed. Inherits from <see cref="ProblemDetails"/> to leverage the standard error handling functionality of ASP.NET Core, while adding the ability to transport data on success.
 /// </summary>
 /// <typeparam name="T">El tipo de datos que se devolverán en caso de éxito.</typeparam>
 public class ApiResponse<T> : ProblemDetails

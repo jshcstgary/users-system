@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Common.Models.Dto.User;
 
+/// <summary>
+/// Data Transfer Object (DTO) to change a user's password. This DTO is used when a user's password needs to be changed. It contains the information needed to change a user's password, excluding properties that are not needed for this scenario.
+/// </summary>
 public class ChangePasswordDto
 {
 	/// <summary>

@@ -1,5 +1,6 @@
-﻿using Common.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+
+using Common.Models;
 
 namespace UserES.Data;
 
