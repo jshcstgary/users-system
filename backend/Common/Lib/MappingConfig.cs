@@ -3,6 +3,7 @@ using AutoMapper;
 using Common.Models;
 using Common.Models.Dto.Role;
 using Common.Models.Dto.RoleOption;
+using Common.Models.Dto.User;
 
 namespace Common.Lib;
 
@@ -31,5 +32,10 @@ public class MappingConfig : Profile
 		CreateMap<RoleOption, RoleOptionDto>().ReverseMap();
 		CreateMap<RoleOption, RoleOptionCreateDto>().ReverseMap();
 		CreateMap<RoleOption, RoleOptionUpdateDto>().ReverseMap();
+
+		// Mapping between User and its DTOs, allowing bidirectional mapping.
+		CreateMap<User, UserDto>().ReverseMap();
+		CreateMap<User, UserCreateDto>().ReverseMap();
+		CreateMap<User, UserUpdateDto>().ReverseMap();
 	}
 }

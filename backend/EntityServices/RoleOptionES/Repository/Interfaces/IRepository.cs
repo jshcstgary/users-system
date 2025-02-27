@@ -18,7 +18,7 @@ public interface IRepository
 	/// <summary>
 	/// Creates a new <see cref="RoleOption"/> entity and adds it to the database context.
 	/// </summary>
-	/// <param name="roleOption">The RoleO ption entity to be created.</param>
+	/// <param name="roleOption">The <see cref="RoleOption"/> entity to be created.</param>
 	/// <returns>A task that represents the asynchronous operation and returns the
 	/// created <see cref="RoleOption"/> entity.</returns>
 	public Task<RoleOption> Create(RoleOption roleOption);

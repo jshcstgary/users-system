@@ -1,4 +1,6 @@
-﻿namespace Common.Models;
+﻿using Common.Constants;
+
+namespace Common.Models;
 
 /// <summary>
 /// Table to store persons.
@@ -58,7 +60,7 @@ public class User
 	/// <summary>
 	/// Indicates whether the user account is active.
 	/// </summary>
-	public bool Status { get; set; }
+	public bool Status { get; set; } = EntityStatus.Active;
 
 	/// <summary>
 	/// The date and time when the user account was created.

@@ -89,7 +89,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 			_apiResponse.Status = HttpStatusCode.Created;
 			_apiResponse.Data = roleDto;
 
-			return CreatedAtRoute($"{className}_GetById", new
+			return CreatedAtRoute($"{className}_{Names.GetByIdMethod}", new
 			{
 				id = roleDto.Id
 			}, _apiResponse);
@@ -258,12 +258,12 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 		{
 			if (id <= 0)
 			{
-				_logger.LogError($"{logInfo} - Id not valid, Id can not be 0 or null.");
+				_logger.LogError($"{logInfo} - Id not valid, Id can not be less than or equal to 0 or null.");
 
 				_apiResponse.Title = "Id not valid.";
 				_apiResponse.Success = ApiStatus.Failed;
 				_apiResponse.Status = HttpStatusCode.BadRequest;
-				_apiResponse.Detail = "Id can not be 0 or null.";
+				_apiResponse.Detail = "Id can not be less than or equal to 0 or null.";
 
 				return BadRequest(_apiResponse);
 			}
@@ -272,9 +272,9 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 
 			if (roleDto == null)
 			{
-				_logger.LogError($"{logInfo} - Data not found.");
+				_logger.LogError($"{logInfo} - {ErrorResponses.DataNotFound}");
 
-				_apiResponse.Title = "Data not found.";
+				_apiResponse.Title = ErrorResponses.DataNotFound;
 				_apiResponse.Success = ApiStatus.Failed;
 				_apiResponse.Status = HttpStatusCode.NotFound;
 
@@ -366,9 +366,9 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 
 			if (roleUpdateDto == null)
 			{
-				_logger.LogError($"{logInfo} - Data not found.");
+				_logger.LogError($"{logInfo} - {ErrorResponses.DataNotFound}");
 
-				_apiResponse.Title = "Data not found.";
+				_apiResponse.Title = ErrorResponses.DataNotFound;
 				_apiResponse.Success = ApiStatus.Failed;
 				_apiResponse.Status = HttpStatusCode.NotFound;
 
@@ -445,12 +445,12 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 		{
 			if (id <= 0)
 			{
-				_logger.LogError($"{logInfo} - Id not valid, Id can not be 0 or null.");
+				_logger.LogError($"{logInfo} - Id not valid, Id can not be less than or equal to 0 or null.");
 
 				_apiResponse.Title = "Id not valid.";
 				_apiResponse.Success = ApiStatus.Failed;
 				_apiResponse.Status = HttpStatusCode.BadRequest;
-				_apiResponse.Detail = "Id can not be 0 or null.";
+				_apiResponse.Detail = "Id can not be less than or equal to 0 or null.";
 
 				return BadRequest(_apiResponse);
 			}
@@ -477,6 +477,18 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 		}
 		catch (DbUpdateConcurrencyException ex)
 		{
+			if (ex.Message == ExceptionMessages.AlreadyDeleted)
+			{
+				_logger.LogError($"{logInfo} - The record is already deleted.");
+
+				_apiResponse.Title = "Inconsistent data.";
+				_apiResponse.Success = ApiStatus.Failed;
+				_apiResponse.Status = HttpStatusCode.Conflict;
+				_apiResponse.Detail = "The record is already deleted.";
+
+				return Conflict(_apiResponse);
+			}
+
 			_logger.LogError($"{logInfo} - {ex}");
 
 			_apiResponse.Title = "Inconsistent data.";
@@ -498,11 +510,11 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 		}
 		catch (Exception ex)
 		{
-			if (ex.Message == "NULL")
+			if (ex.Message == ExceptionMessages.Null)
 			{
-				_logger.LogError($"{logInfo} - Data not found.");
+				_logger.LogError($"{logInfo} - {ErrorResponses.DataNotFound}");
 
-				_apiResponse.Title = "Data not found.";
+				_apiResponse.Title = ErrorResponses.DataNotFound;
 				_apiResponse.Success = ApiStatus.Failed;
 				_apiResponse.Status = HttpStatusCode.NotFound;
 

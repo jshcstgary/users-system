@@ -1,5 +1,7 @@
 using System.Linq.Expressions;
 
+using Microsoft.EntityFrameworkCore;
+
 using AutoMapper;
 
 using Common.Constants;
@@ -46,8 +48,6 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 		try
 		{
 			RoleOption roleOption = _mapper.Map<RoleOption>(roleOptionCreateDto);
-
-			roleOption.Status = EntityStatus.Active;
 
 			RoleOption newRoleOption = await _repository.Create(roleOption);
 
@@ -152,11 +152,11 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 
 		try
 		{
-			RoleOption? roleOption = await _repository.GetOne(roleOption => roleOption.Id == id);
+			RoleOption roleOption = await _repository.GetOne(roleOption => roleOption.Id == id) ?? throw new Exception(ExceptionMessages.Null);
 
-			if (roleOption == null)
+			if (!roleOption.Status)
 			{
-				throw new Exception("NULL");
+				throw new DbUpdateConcurrencyException(ExceptionMessages.AlreadyDeleted);
 			}
 
 			roleOption.Status = EntityStatus.Inactive;

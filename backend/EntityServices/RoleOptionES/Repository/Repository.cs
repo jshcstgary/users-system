@@ -99,6 +99,7 @@ public class Repository : IRepository
 			return await query
 				.Skip(offset)
 				.Take(limit)
+				.AsNoTracking()
 				.ToListAsync();
 		}
 		catch (Exception)

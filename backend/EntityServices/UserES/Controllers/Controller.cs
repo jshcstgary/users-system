@@ -7,23 +7,23 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 using Common.Constants;
 using Common.Models;
-using Common.Models.Dto.RoleOption;
+using Common.Models.Dto.User;
 
-using RoleOptionES.Services.Interfaces;
+using UserES.Services.Interfaces;
 
-namespace RoleOptionES.Controllers;
+namespace UserES.Controllers;
 
 /// <summary>
-/// API controller for managing <see cref="RoleOption"/> entities.
+/// API controller for managing <see cref="User"/> entities.
 /// </summary>
-[Route(ControllerRoutes.RoleOption)]
+[Route(ControllerRoutes.User)]
 [ApiController]
 public class Controller(ILogger<Controller> logger, IService service) : ControllerBase()
 {
 	/// <summary>
 	/// Constant string representing the base logger for the controller layer.
 	/// </summary>
-	private const string className = $"{Names.RoleOptionModel}{Names.ControllerClass}";
+	private const string className = $"{Names.UserModel}{Names.ControllerClass}";
 
 	/// <summary>
 	/// Logger used to log messages and events.
@@ -36,27 +36,27 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	private readonly IService _service = service;
 
 	/// <summary>
-	/// Creates a new <see cref="RoleOption"/>.
+	/// Creates a new <see cref="User"/>.
 	/// </summary>
-	/// <param name="roleOptionCreateDto">The data for the creation of the <see cref="RoleOption"/>.</param>
+	/// <param name="userCreateDto">The data for the creation of the <see cref="User"/>.</param>
 	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the <see cref="RoleOption"/> created.</returns>
+	/// response with the <see cref="User"/> created.</returns>
 	[HttpPost(Name = $"{className}_{Names.CreateMethod}")]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status201Created)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status408RequestTimeout)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status500InternalServerError)]
-	public async Task<ActionResult<ApiResponse<RoleOptionDto>>> Create([FromBody] RoleOptionCreateDto roleOptionCreateDto)
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status201Created)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status408RequestTimeout)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status500InternalServerError)]
+	public async Task<ActionResult<ApiResponse<UserDto>>> Create([FromBody] UserCreateDto userCreateDto)
 	{
 		string logInfo = $"{className} - {Names.CreateMethod} method";
 
 		_logger.LogInformation($"Executing {logInfo}.");
 
-		ApiResponse<RoleOptionDto> _apiResponse = new();
+		ApiResponse<UserDto> _apiResponse = new();
 
 		try
 		{
-			if (roleOptionCreateDto == null)
+			if (userCreateDto == null)
 			{
 				_logger.LogError($"{logInfo} - No data recieved, data is null.");
 
@@ -80,17 +80,17 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 				return BadRequest(_apiResponse);
 			}
 
-			RoleOptionDto roleOptionDto = await _service.Create(roleOptionCreateDto);
+			UserDto userDto = await _service.Create(userCreateDto);
 
 			_logger.LogInformation($"{logInfo} - Data created successfully.");
 
 			_apiResponse.Success = ApiStatus.Success;
 			_apiResponse.Status = HttpStatusCode.Created;
-			_apiResponse.Data = roleOptionDto;
+			_apiResponse.Data = userDto;
 
 			return CreatedAtRoute($"{className}_{Names.GetByIdMethod}", new
 			{
-				id = roleOptionDto.Id
+				id = userDto.Id
 			}, _apiResponse);
 		}
 		catch (RetryLimitExceededException ex)
@@ -107,7 +107,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 		{
 			string exceptionMessage = ex.InnerException!.Message;
 
-			if (exceptionMessage.Contains("IX__UQ__ROLE_OPTIONS__"))
+			if (exceptionMessage.Contains("IX__UQ__USERS__"))
 			{
 				_logger.LogError($"{logInfo} - {ex}");
 
@@ -115,14 +115,24 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 				_apiResponse.Success = ApiStatus.Failed;
 				_apiResponse.Status = HttpStatusCode.BadRequest;
 
-				if (exceptionMessage.Contains("IX__UQ__ROLE_OPTIONS__LINK"))
+				if (exceptionMessage.Contains("IX__UQ__USERS__DNI"))
 				{
-					_apiResponse.AddError("link", ["The link of the role option already exists."]);
+					_apiResponse.AddError("dni", ["The DNI of the user already exists."]);
 				}
 
-				if (exceptionMessage.Contains("IX__UQ__ROLE_OPTIONS__NAME"))
+				if (exceptionMessage.Contains("IX__UQ__USERS__EMAIL"))
 				{
-					_apiResponse.AddError("name", ["The name of the role option already exists."]);
+					_apiResponse.AddError("email", ["The email of the user already exists."]);
+				}
+
+				if (exceptionMessage.Contains("IX__UQ__USERS__PHONE"))
+				{
+					_apiResponse.AddError("phone", ["The phone of the user already exists."]);
+				}
+
+				if (exceptionMessage.Contains("IX__UQ__USERS__USERNAME"))
+				{
+					_apiResponse.AddError("username", ["The username of the user already exists."]);
 				}
 
 				return BadRequest(_apiResponse);
@@ -153,22 +163,22 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	}
 
 	/// <summary>
-	/// Gets a list of <see cref="RoleOption"/> entities.
+	/// Gets a list of <see cref="User"/> entities.
 	/// </summary>
 	/// <param name="paginationParams">The paging parameters for the query.</param>
 	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the list of <see cref="RoleOption"/> entities.</returns>
+	/// response with the list of <see cref="User"/> entities.</returns>
 	[HttpGet(Name = $"{className}_{Names.GetAllMethod}")]
-	[ProducesResponseType(typeof(ApiResponse<IEnumerable<RoleOptionDto>>), StatusCodes.Status200OK)]
-	[ProducesResponseType(typeof(ApiResponse<IEnumerable<RoleOptionDto>>), StatusCodes.Status408RequestTimeout)]
-	[ProducesResponseType(typeof(ApiResponse<IEnumerable<RoleOptionDto>>), StatusCodes.Status500InternalServerError)]
-	public async Task<ActionResult<ApiResponse<IEnumerable<RoleOptionDto>>>> GetAll([FromQuery] PaginationParams paginationParams)
+	[ProducesResponseType(typeof(ApiResponse<IEnumerable<UserDto>>), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(ApiResponse<IEnumerable<UserDto>>), StatusCodes.Status408RequestTimeout)]
+	[ProducesResponseType(typeof(ApiResponse<IEnumerable<UserDto>>), StatusCodes.Status500InternalServerError)]
+	public async Task<ActionResult<ApiResponse<IEnumerable<UserDto>>>> GetAll([FromQuery] PaginationParams paginationParams)
 	{
 		string logInfo = $"{className} - {Names.GetAllMethod} method";
 
 		_logger.LogInformation($"Executing {logInfo}.");
 
-		ApiResponse<IEnumerable<RoleOptionDto>> _apiResponse = new();
+		ApiResponse<IEnumerable<UserDto>> _apiResponse = new();
 
 		try
 		{
@@ -194,20 +204,20 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 				return BadRequest(_apiResponse);
 			}
 
-			Expression<Func<RoleOption, bool>>? filter = null;
+			Expression<Func<User, bool>>? filter = null;
 
 			if (paginationParams.Status.HasValue)
 			{
-				filter = roleOption => roleOption.Status == paginationParams.Status;
+				filter = user => user.Status == paginationParams.Status;
 			}
 
-			IEnumerable<RoleOptionDto> roleOptionsDto = await _service.GetAll(paginationParams.Limit, paginationParams.Offset, filter);
+			IEnumerable<UserDto> usersDto = await _service.GetAll(paginationParams.Limit, paginationParams.Offset, filter);
 
 			_logger.LogInformation($"{logInfo} - Data obtained.");
 
 			_apiResponse.Success = ApiStatus.Success;
 			_apiResponse.Status = HttpStatusCode.OK;
-			_apiResponse.Data = roleOptionsDto;
+			_apiResponse.Data = usersDto;
 
 			return Ok(_apiResponse);
 		}
@@ -238,24 +248,24 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	}
 
 	/// <summary>
-	/// You get a <see cref="RoleOption"/> for your ID.
+	/// You get a <see cref="User"/> for your ID.
 	/// </summary>
-	/// <param name="id">The ID of the <see cref="RoleOption"/> to obtain.</param>
+	/// <param name="id">The ID of the <see cref="User"/> to obtain.</param>
 	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the <see cref="RoleOption"/>.</returns>
+	/// response with the <see cref="User"/>.</returns>
 	[HttpGet("{id}", Name = $"{className}_{Names.GetByIdMethod}")]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status200OK)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status404NotFound)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status408RequestTimeout)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status500InternalServerError)]
-	public async Task<ActionResult<ApiResponse<RoleOptionDto>>> GetById([FromRoute] int id)
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status404NotFound)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status408RequestTimeout)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status500InternalServerError)]
+	public async Task<ActionResult<ApiResponse<UserDto>>> GetById([FromRoute] int id)
 	{
 		string logInfo = $"{className} - {Names.GetByIdMethod} method";
 
 		_logger.LogInformation($"Executing {logInfo}.");
 
-		ApiResponse<RoleOptionDto> _apiResponse = new();
+		ApiResponse<UserDto> _apiResponse = new();
 
 		try
 		{
@@ -271,9 +281,9 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 				return BadRequest(_apiResponse);
 			}
 
-			RoleOptionDto? roleOptionDto = await _service.GetOne(roleOption => roleOption.Id == id);
+			UserDto? userDto = await _service.GetOne(user => user.Id == id);
 
-			if (roleOptionDto == null)
+			if (userDto == null)
 			{
 				_logger.LogError($"{logInfo} - {ErrorResponses.DataNotFound}");
 
@@ -288,7 +298,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 
 			_apiResponse.Success = ApiStatus.Success;
 			_apiResponse.Status = HttpStatusCode.OK;
-			_apiResponse.Data = roleOptionDto;
+			_apiResponse.Data = userDto;
 
 			return Ok(_apiResponse);
 		}
@@ -319,29 +329,29 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	}
 
 	/// <summary>
-	/// Updates an existing <see cref="RoleOption"/>.
+	/// Updates an existing <see cref="User"/>.
 	/// </summary>
-	/// <param name="roleOptionUpdateDto">The data for the update of the <see cref="RoleOption"/>.</param>
+	/// <param name="userUpdateDto">The data for the update of the <see cref="User"/>.</param>
 	/// <returns>A task that represents the asynchronous operation and returns an API
-	/// response with the updated <see cref="RoleOption"/>.</returns>
+	/// response with the updated <see cref="User"/>.</returns>
 	[HttpPut(Name = $"{className}_{Names.UpdateMethod}")]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status200OK)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status404NotFound)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status408RequestTimeout)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status409Conflict)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status500InternalServerError)]
-	public async Task<ActionResult<ApiResponse<RoleOptionDto>>> Update([FromBody] RoleOptionUpdateDto roleOptionUpdateDto)
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status404NotFound)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status408RequestTimeout)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status409Conflict)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status500InternalServerError)]
+	public async Task<ActionResult<ApiResponse<UserDto>>> Update([FromBody] UserUpdateDto userUpdateDto)
 	{
 		string logInfo = $"{className} - {Names.UpdateMethod} method";
 
 		_logger.LogInformation($"Executing {logInfo}.");
 
-		ApiResponse<RoleOptionDto> _apiResponse = new();
+		ApiResponse<UserDto> _apiResponse = new();
 
 		try
 		{
-			if (roleOptionUpdateDto == null)
+			if (userUpdateDto == null)
 			{
 				_logger.LogError($"{logInfo} - No data recieved, data is null.");
 
@@ -365,9 +375,9 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 				return BadRequest(_apiResponse);
 			}
 
-			RoleOptionDto? roleOptionUpdatedDto = await _service.Update(roleOptionUpdateDto);
+			UserDto? userUpdatedDto = await _service.Update(userUpdateDto);
 
-			if (roleOptionUpdateDto == null)
+			if (userUpdateDto == null)
 			{
 				_logger.LogError($"{logInfo} - {ErrorResponses.DataNotFound}");
 
@@ -382,7 +392,7 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 
 			_apiResponse.Success = ApiStatus.Success;
 			_apiResponse.Status = HttpStatusCode.OK;
-			_apiResponse.Data = roleOptionUpdatedDto;
+			_apiResponse.Data = userUpdatedDto;
 
 			return Ok(_apiResponse);
 		}
@@ -424,25 +434,25 @@ public class Controller(ILogger<Controller> logger, IService service) : Controll
 	}
 
 	/// <summary>
-	/// Deletes a <see cref="RoleOption"/> by its ID.
+	/// Deletes a <see cref="User"/> by its ID.
 	/// </summary>
-	/// <param name="id">The ID of the <see cref="RoleOption"/> to be deleted.</param>
+	/// <param name="id">The ID of the <see cref="User"/> to be deleted.</param>
 	/// <returns>A task that represents the asynchronous operation and returns an API
 	/// response with the role option removed (if applicable).</returns>
 	[HttpDelete("{id}", Name = $"{className}_{Names.DeleteMethod}")]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status200OK)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status404NotFound)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status408RequestTimeout)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status409Conflict)]
-	[ProducesResponseType(typeof(ApiResponse<RoleOptionDto>), StatusCodes.Status500InternalServerError)]
-	public async Task<ActionResult<ApiResponse<RoleOptionDto>>> Delete([FromRoute] int id)
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status200OK)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status404NotFound)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status408RequestTimeout)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status409Conflict)]
+	[ProducesResponseType(typeof(ApiResponse<UserDto>), StatusCodes.Status500InternalServerError)]
+	public async Task<ActionResult<ApiResponse<UserDto>>> Delete([FromRoute] int id)
 	{
 		string logInfo = $"{className} - {Names.GetByIdMethod} method";
 
 		_logger.LogInformation($"Executing {logInfo}.");
 
-		ApiResponse<RoleOptionDto> _apiResponse = new();
+		ApiResponse<UserDto> _apiResponse = new();
 
 		try
 		{

@@ -6,22 +6,22 @@ using AutoMapper;
 
 using Common.Constants;
 using Common.Models;
-using Common.Models.Dto.Role;
+using Common.Models.Dto.User;
 
-using RoleES.Repository.Interfaces;
-using RoleES.Services.Interfaces;
+using UserES.Repository.Interfaces;
+using UserES.Services.Interfaces;
 
-namespace RoleES.Services;
+namespace UserES.Services;
 
 /// <summary>
-/// Implementation of <see cref="IService"/> that manages the data on <see cref="Role"/> entity.
+/// Implementation of <see cref="IService"/> that manages the data on <see cref="User"/> entity.
 /// </summary>
 public class Service(ILogger<IService> logger, IRepository repository, IMapper mapper) : IService
 {
 	/// <summary>
 	/// Constant string representing the base logger for the service layer.
 	/// </summary>
-	private const string className = $"{Names.RoleModel}{Names.ServiceClass}";
+	private const string className = $"{Names.UserModel}{Names.ServiceClass}";
 
 	/// <summary>
 	/// Logger used to log messages and events.
@@ -39,7 +39,7 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 	private readonly IMapper _mapper = mapper;
 
 	/// <inheritdoc/>
-	public async Task<RoleDto> Create(RoleCreateDto roleCreateDto)
+	public async Task<UserDto> Create(UserCreateDto userCreateDto)
 	{
 		string logInfo = $"{className} - {Names.CreateMethod} method";
 
@@ -47,11 +47,11 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 
 		try
 		{
-			Role role = _mapper.Map<Role>(roleCreateDto);
+			User user = _mapper.Map<User>(userCreateDto);
 
-			Role newRole = await _repository.Create(role);
+			User newUser = await _repository.Create(user);
 
-			return _mapper.Map<RoleDto>(newRole);
+			return _mapper.Map<UserDto>(newUser);
 		}
 		catch (Exception)
 		{
@@ -64,7 +64,7 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 	}
 
 	/// <inheritdoc/>
-	public async Task<IEnumerable<RoleDto>> GetAll(int limit, int offset, Expression<Func<Role, bool>>? filter = null)
+	public async Task<IEnumerable<UserDto>> GetAll(int limit, int offset, Expression<Func<User, bool>>? filter = null)
 	{
 		string logInfo = $"{className} - {Names.GetAllMethod} method";
 
@@ -72,9 +72,9 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 
 		try
 		{
-			IEnumerable<Role> roles = await _repository.GetAll(limit, offset, filter);
+			IEnumerable<User> users = await _repository.GetAll(limit, offset, filter);
 
-			return _mapper.Map<IEnumerable<RoleDto>>(roles);
+			return _mapper.Map<IEnumerable<UserDto>>(users);
 		}
 		catch (Exception)
 		{
@@ -87,7 +87,7 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 	}
 
 	/// <inheritdoc/>
-	public async Task<RoleDto?> GetOne(Expression<Func<Role, bool>> filter)
+	public async Task<UserDto?> GetOne(Expression<Func<User, bool>> filter)
 	{
 		string logInfo = $"{className} - {Names.GetOneMethod} method";
 
@@ -95,9 +95,9 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 
 		try
 		{
-			Role? role = await _repository.GetOne(filter);
+			User? user = await _repository.GetOne(filter);
 
-			return _mapper.Map<RoleDto>(role);
+			return _mapper.Map<UserDto>(user);
 		}
 		catch (Exception)
 		{
@@ -110,7 +110,7 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 	}
 
 	/// <inheritdoc/>
-	public async Task<RoleDto?> Update(RoleUpdateDto roleUpdateDto)
+	public async Task<UserDto?> Update(UserUpdateDto userUpdateDto)
 	{
 		string logInfo = $"{className} - {Names.UpdateMethod} method";
 
@@ -118,20 +118,21 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 
 		try
 		{
-			Role? roleFound = await _repository.GetOne(role => role.Id == roleUpdateDto.Id);
+			User? userFound = await _repository.GetOne(user => user.Id == userUpdateDto.Id);
 
-			if (roleFound == null)
+			if (userFound == null)
 			{
 				return null;
 			}
 
-			Role role = _mapper.Map<Role>(roleUpdateDto);
+			User user = _mapper.Map<User>(userUpdateDto);
 
-			role.UpdatedAt = DateTime.UtcNow;
+			user.Password = userFound.Password;
+			user.UpdatedAt = DateTime.UtcNow;
 
-			Role? roleUpdated = await _repository.Update(role);
+			User userUpdated = await _repository.Update(user);
 
-			return _mapper.Map<RoleDto>(roleUpdated);
+			return _mapper.Map<UserDto>(userUpdated);
 		}
 		catch (Exception)
 		{
@@ -152,17 +153,17 @@ public class Service(ILogger<IService> logger, IRepository repository, IMapper m
 
 		try
 		{
-			Role role = await _repository.GetOne(role => role.Id == id) ?? throw new Exception(ExceptionMessages.Null);
+			User user = await _repository.GetOne(user => user.Id == id) ?? throw new Exception(ExceptionMessages.Null);
 
-			if (!role.Status)
+			if (!user.Status)
 			{
 				throw new DbUpdateConcurrencyException(ExceptionMessages.AlreadyDeleted);
 			}
 
-			role.Status = EntityStatus.Inactive;
-			role.UpdatedAt = DateTime.UtcNow;
+			user.Status = EntityStatus.Inactive;
+			user.UpdatedAt = DateTime.UtcNow;
 
-			return await _repository.Delete(role!);
+			return await _repository.Delete(user!);
 		}
 		catch (Exception)
 		{

@@ -1,4 +1,6 @@
-﻿namespace Common.Models;
+﻿using Common.Constants;
+
+namespace Common.Models;
 
 /// <summary>
 /// Table to store the roles.
@@ -19,7 +21,7 @@ public class Role
 	/// Indicates whether the role is currently active. True if role is active
 	/// and can be assigned to users, false otherwise.
 	/// </summary>
-	public bool Status { get; set; }
+	public bool Status { get; set; } = EntityStatus.Active;
 
 	/// <summary>
 	/// A row version used for optimistic concurrency control. This property

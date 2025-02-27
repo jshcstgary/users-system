@@ -1,4 +1,6 @@
-﻿namespace Common.Models;
+﻿using Common.Constants;
+
+namespace Common.Models;
 
 /// <summary>
 /// Table to store the options of the roles.
@@ -26,7 +28,7 @@ public class RoleOption
 	/// Indicates whether the role option is currently active. True if role option
 	/// is active and can be assigned to roles, false otherwise.
 	/// </summary>
-	public bool Status { get; set; }
+	public bool Status { get; set; } = EntityStatus.Active;
 
 	/// <summary>
 	/// A row version used for optimistic concurrency control. This property is

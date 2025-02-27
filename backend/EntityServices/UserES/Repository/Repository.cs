@@ -6,21 +6,21 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Common.Constants;
 using Common.Models;
 
-using RoleES.Data;
-using RoleES.Repository.Interfaces;
+using UserES.Data;
+using UserES.Repository.Interfaces;
 
-namespace RoleES.Repository;
+namespace UserES.Repository;
 
 /// <summary>
 /// Implementation of <see cref="IRepository"/> that interacts with a data repository
-/// for CRUD operations on <see cref="Role"/> entities.
+/// for CRUD operations on <see cref="User"/> entities.
 /// </summary>
 public class Repository : IRepository
 {
 	/// <summary>
 	/// Constant string representing the base logger for the repository layer.
 	/// </summary>
-	private const string className = $"{Names.RoleModel}{Names.RepositoryClass}";
+	private const string className = $"{Names.UserModel}{Names.RepositoryClass}";
 
 	/// <summary>
 	/// Logger used to log messages and events.
@@ -33,9 +33,9 @@ public class Repository : IRepository
 	private readonly AppDbContext _context;
 
 	/// <summary>
-	/// Set of <see cref="Role"/> entities in the database.
+	/// Set of <see cref="User"/> entities in the database.
 	/// </summary>
-	protected readonly DbSet<Role> dbSet;
+	protected readonly DbSet<User> dbSet;
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="Repository"/> class.
@@ -46,7 +46,7 @@ public class Repository : IRepository
 	{
 		_logger = logger;
 		_context = context;
-		dbSet = _context.Set<Role>();
+		dbSet = _context.Set<User>();
 	}
 
 	/// <inheritdoc/>
@@ -56,7 +56,7 @@ public class Repository : IRepository
 	}
 
 	/// <inheritdoc/>
-	public async Task<Role> Create(Role role)
+	public async Task<User> Create(User user)
 	{
 		string logInfo = $"{className} - {Names.CreateMethod} method";
 
@@ -64,13 +64,16 @@ public class Repository : IRepository
 
 		try
 		{
-			foreach (RoleOption roleOption in role.RoleOptions)
+			_context.Set<Role>().Attach(user.Role);
+			_context.Entry(user.Role).State = EntityState.Unchanged;
+
+			foreach (RoleOption roleOption in user.Role.RoleOptions)
 			{
 				_context.Set<RoleOption>().Attach(roleOption);
 				_context.Entry(roleOption).State = EntityState.Unchanged;
 			}
 
-			EntityEntry<Role> entityEntry = await dbSet.AddAsync(role);
+			EntityEntry<User> entityEntry = await dbSet.AddAsync(user);
 
 			await Save();
 
@@ -87,7 +90,7 @@ public class Repository : IRepository
 	}
 
 	/// <inheritdoc/>
-	public async Task<IEnumerable<Role>> GetAll(int limit, int offset, Expression<Func<Role, bool>>? filter = null)
+	public async Task<IEnumerable<User>> GetAll(int limit, int offset, Expression<Func<User, bool>>? filter = null)
 	{
 		string logInfo = $"{className} - {Names.GetAllMethod} method";
 
@@ -95,7 +98,7 @@ public class Repository : IRepository
 
 		try
 		{
-			IQueryable<Role> query = dbSet;
+			IQueryable<User> query = dbSet;
 
 			if (filter != null)
 			{
@@ -103,7 +106,8 @@ public class Repository : IRepository
 			}
 
 			return await query
-				.Include(role => role.RoleOptions)
+				.Include(user => user.Role)
+					.ThenInclude(role => role.RoleOptions)
 				.Skip(offset)
 				.Take(limit)
 				.AsNoTracking()
@@ -120,7 +124,7 @@ public class Repository : IRepository
 	}
 
 	/// <inheritdoc/>
-	public async Task<Role?> GetOne(Expression<Func<Role, bool>> filter)
+	public async Task<User?> GetOne(Expression<Func<User, bool>> filter)
 	{
 		string logInfo = $"{className} - {Names.GetOneMethod} method";
 
@@ -129,7 +133,8 @@ public class Repository : IRepository
 		try
 		{
 			return await dbSet
-				.Include(role => role.RoleOptions)
+				.Include(user => user.Role)
+					.ThenInclude(role => role.RoleOptions)
 				.AsNoTracking()
 				.FirstOrDefaultAsync(filter);
 		}
@@ -144,7 +149,7 @@ public class Repository : IRepository
 	}
 
 	/// <inheritdoc/>
-	public async Task<Role?> Update(Role role)
+	public async Task<User> Update(User user)
 	{
 		string logInfo = $"{className} - {Names.UpdateMethod} method";
 
@@ -152,13 +157,13 @@ public class Repository : IRepository
 
 		try
 		{
-			_context.Set<Role>().Entry(role).State = EntityState.Modified;
+			_context.Set<User>().Entry(user).State = EntityState.Modified;
 
 			await Save();
 
-			await _context.Entry(role).ReloadAsync();
+			await _context.Entry(user).ReloadAsync();
 
-			return role;
+			return user;
 		}
 		catch (Exception)
 		{
@@ -171,8 +176,7 @@ public class Repository : IRepository
 	}
 
 	/// <inheritdoc/>
-	public async Task<bool> Delete(Role role)
-	// public async Task<bool> Delete(long id)
+	public async Task<bool> Delete(User user)
 	{
 		string logInfo = $"{className} - {Names.DeleteMethod} method";
 
@@ -180,7 +184,7 @@ public class Repository : IRepository
 
 		try
 		{
-			_context.Set<Role>().Entry(role).State = EntityState.Modified;
+			_context.Set<User>().Entry(user).State = EntityState.Modified;
 
 			await Save();
 

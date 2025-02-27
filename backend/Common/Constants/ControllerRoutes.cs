@@ -22,4 +22,9 @@ public static class ControllerRoutes
 	/// Defines the base path for the roles in the API.
 	/// </summary>
 	public const string Role = $"{Prefix}/role";
+
+	/// <summary>
+	/// Defines the base path for the users in the API.
+	/// </summary>
+	public const string User = $"{Prefix}/user";
 }

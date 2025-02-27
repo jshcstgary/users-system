@@ -67,7 +67,8 @@ public class UserCreateDto
 	/// The User's password.
 	/// </summary>
 	[Required(ErrorMessage = "The field {0} is required")]
-	[RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$", ErrorMessage = "The field {0} is not a valid password.")]
+	// [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d[^A-Za-z\d]]{8,16}$", ErrorMessage = "The field {0} is not a valid password.")]
+	[RegularExpression(@"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,16}$", ErrorMessage = "The field {0} is not a valid password.")]
 	public string Password { get; set; } = null!;
 
 	/// <summary>
