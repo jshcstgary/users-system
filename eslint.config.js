@@ -63,6 +63,7 @@ module.exports = tseslint.config(
 			"@angular-eslint/no-output-rename": ["error"],
 			"@angular-eslint/no-pipe-impure": ["error"],
 			"@angular-eslint/prefer-output-readonly": ["error"],
+			"@angular-eslint/prefer-standalone": ["off"],
 			"@angular-eslint/relative-url-prefix": ["error"],
 			"@angular-eslint/sort-lifecycle-methods": ["error"],
 			"@angular-eslint/use-component-selector": ["error"],
